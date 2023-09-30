@@ -1,9 +1,11 @@
-function checkString(string, maxLength) {
-  return string.length <= maxLength;
-}
+const checkString = (string, maxLength) => string.length <= maxLength;
+
+checkString('проверяемая строка', 20);
+checkString('проверяемая строка', 18);
+checkString('проверяемая строка', 10);
 
 function checkPalindrome(string) {
-  let normalizedString = string.replaceAll(' ', '').toLowerCase();
+  const normalizedString = string.replaceAll(' ', '').toLowerCase();
   let reverseString = '';
 
   for (let i = normalizedString.length - 1; i >= 0; i--) {
@@ -13,11 +15,15 @@ function checkPalindrome(string) {
   return normalizedString === reverseString;
 }
 
+checkPalindrome('топот');
+checkPalindrome('ДовОд');
+checkPalindrome('Кекс');
+
 function extractInteger(value) {
-  let string = value.toString();
+  const string = value.toString();
   let total = '';
   for (let i = 0; i < string.length; i++) {
-    let number = parseInt(string[i]);
+    const number = parseInt(string[i], 10);
     if (!Number.isNaN(number)) {
       total += number;
     }
@@ -26,4 +32,12 @@ function extractInteger(value) {
   return total === '' ? 'NaN' : total;
 }
 
-console.log(extractInteger('1 кефир, 0.5 батона'));
+extractInteger('2023 год');
+extractInteger('ECMAScript 2022');
+extractInteger('1 кефир, 0.5 батона');
+extractInteger('агент 007');
+extractInteger('а я томат');
+
+extractInteger(2023);
+extractInteger(-1);
+extractInteger(1.5);
