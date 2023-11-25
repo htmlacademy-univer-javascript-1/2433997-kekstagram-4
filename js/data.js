@@ -4,7 +4,7 @@ import {
   getRandomArrayElement,
 } from './utils.js';
 
-const SIMILAR_PHOTO_DESCRIPTION_COUNT = 25;
+const SIMILAR_PICTURES_COUNT = 25;
 
 const MESSAGE_SUGGESSTIONS = [
   'Всё отлично!',
@@ -37,7 +37,7 @@ const createComments = () => ({
   name: getRandomArrayElement(NAMES),
 });
 
-const createPhotoDescription = () => {
+const generatePicture = () => {
   const id = getRandomPhotoId();
   return {
     id,
@@ -48,4 +48,7 @@ const createPhotoDescription = () => {
   };
 };
 
-export { createPhotoDescription, SIMILAR_PHOTO_DESCRIPTION_COUNT };
+const generatePictures = () =>
+  Array.from({ length: SIMILAR_PICTURES_COUNT }, generatePicture);
+
+export { generatePictures };
