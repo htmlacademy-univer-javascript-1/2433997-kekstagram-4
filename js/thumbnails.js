@@ -21,3 +21,5 @@ similarPictures.forEach((picture) => {
 });
 
 picturesContainer.appendChild(similarListFragment);
+
+export { similarPictures };

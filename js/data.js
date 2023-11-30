@@ -2,7 +2,7 @@ import {
   getRandomInteger,
   getRandomId,
   getRandomArrayElement,
-} from './utils.js';
+} from './util.js';
 
 const SIMILAR_PICTURES_COUNT = 25;
 
