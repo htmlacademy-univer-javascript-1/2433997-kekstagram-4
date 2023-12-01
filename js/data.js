@@ -30,7 +30,7 @@ const NAMES = [
 const getRandomPhotoId = getRandomId(1, 25);
 const getRandomCommentsId = getRandomId(1, Number.MAX_SAFE_INTEGER);
 
-const createComments = () => ({
+const generateComments = () => ({
   id: getRandomCommentsId(),
   avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
   message: getRandomArrayElement(MESSAGE_SUGGESSTIONS),
@@ -44,7 +44,7 @@ const generatePicture = () => {
     url: `photos/${id}.jpg`,
     description: `Описание фото номер ${id}`,
     likes: getRandomInteger(15, 200),
-    comments: Array.from({ length: getRandomInteger(0, 30) }, createComments),
+    comments: Array.from({ length: getRandomInteger(0, 30) }, generateComments),
   };
 };
 

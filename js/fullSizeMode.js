@@ -1,17 +1,17 @@
 import { similarPictures } from './thumbnails.js';
 import { isEscapeKey } from './util.js';
-import './thumbnails.js';
 
 const userModalElement = document.querySelector('.big-picture');
 const userModalOpenElement = document.querySelector('.pictures');
 const userModalCloseElement = userModalElement.querySelector(
   '.big-picture__cancel'
 );
+const socialComment = userModalElement.querySelector('.social__comment');
+const socialComments = userModalElement.querySelector('.social__comments');
 const socialCommentCount = userModalElement.querySelector(
   '.social__comment-count'
 );
 const commentsLoader = userModalElement.querySelector('.comments-loader');
-
 const pictureArray = document.querySelectorAll('.picture__img');
 
 const onDocumentKeydown = (evt) => {
@@ -21,11 +21,12 @@ const onDocumentKeydown = (evt) => {
   }
 };
 
-const createCommentList = (comment) => {
-  const socialComment = document.querySelector('.social__comment');
-  socialComment.querySelector('.social__picture').src = comment.avatar;
-  socialComment.querySelector('.social__picture').alt = comment.name;
-  socialComment.querySelector('.social__text').textContent = comment.message;
+const renderingComments = (comment) => {
+  const newComment = socialComment.cloneNode(true);
+  newComment.querySelector('.social__picture').src = comment.avatar;
+  newComment.querySelector('.social__picture').alt = comment.name;
+  newComment.querySelector('.social__text').textContent = comment.message;
+  return newComment;
 };
 
 function openUserModal(evt) {
@@ -44,8 +45,9 @@ function openUserModal(evt) {
         similarPictures[i].comments.length;
       userModalElement.querySelector('.social__caption').textContent =
         similarPictures[i].description;
+
       similarPictures[i].comments.forEach((comment) => {
-        createCommentList(comment);
+        socialComments.appendChild(renderingComments(comment));
       });
     }
   }
@@ -55,6 +57,7 @@ function openUserModal(evt) {
 
 function closeUserModal() {
   userModalElement.classList.add('hidden');
+  document.body.classList.remove('modal-open');
 
   document.removeEventListener('keydown', onDocumentKeydown);
 }
