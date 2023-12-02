@@ -6,12 +6,14 @@ const userModalOpenElement = document.querySelector('.pictures');
 const userModalCloseElement = userModalElement.querySelector(
   '.big-picture__cancel'
 );
-const socialComment = userModalElement.querySelector('.social__comment');
 const socialComments = userModalElement.querySelector('.social__comments');
+const socialComment = userModalElement.querySelector('.social__comment');
 const socialCommentCount = userModalElement.querySelector(
   '.social__comment-count'
 );
-const commentsLoader = userModalElement.querySelector('.comments-loader');
+const socialCommentsLoader = userModalElement.querySelector(
+  '.social__comments-loader'
+);
 const pictureArray = document.querySelectorAll('.picture__img');
 
 const onDocumentKeydown = (evt) => {
@@ -21,34 +23,71 @@ const onDocumentKeydown = (evt) => {
   }
 };
 
-const renderingComments = (comment) => {
-  const newComment = socialComment.cloneNode(true);
-  newComment.querySelector('.social__picture').src = comment.avatar;
-  newComment.querySelector('.social__picture').alt = comment.name;
-  newComment.querySelector('.social__text').textContent = comment.message;
-  return newComment;
+const renderingFullSizePicture = (similarPicturesInfo) => {
+  userModalElement.querySelector('.big-picture__img').children[0].src =
+    similarPicturesInfo.url;
+  userModalElement.querySelector('.likes-count').textContent =
+    similarPicturesInfo.likes;
+  userModalElement.querySelector('.comments-count').textContent =
+    similarPicturesInfo.comments.length;
+  userModalElement.querySelector('.social__caption').textContent =
+    similarPicturesInfo.description;
+};
+
+const updateCountComment = () => {
+  const currentCountComments =
+    socialComments.children.length -
+    document.querySelectorAll('.social__comment.hidden').length;
+  const totalCountComments = socialComments.children.length;
+
+  socialCommentCount.innerHTML = `${currentCountComments} из <span class="comments-count">${totalCountComments}</span> комментариев`;
+
+  if (currentCountComments < totalCountComments) {
+    socialCommentsLoader.classList.remove('hidden');
+  } else {
+    socialCommentsLoader.classList.add('hidden');
+  }
+};
+
+const renderingComments = (comments) => {
+  socialComments.innerHTML = '';
+
+  for (let i = 0; i < comments.length; i++) {
+    const newComment = socialComment.cloneNode(true);
+    if (i >= 5) {
+      newComment.classList.add('hidden');
+    }
+    newComment.querySelector('.social__picture').src = comments[i].avatar;
+    newComment.querySelector('.social__picture').alt = comments[i].name;
+    newComment.querySelector('.social__text').textContent = comments[i].message;
+    socialComments.appendChild(newComment);
+  }
+
+  updateCountComment();
+};
+
+const loadMoreComments = () => {
+  const commentList = Array.from(
+    document.querySelectorAll('.social__comment.hidden')
+  );
+
+  commentList.forEach((comment, index) => {
+    if (index < 5) {
+      comment.classList.remove('hidden');
+    }
+  });
+
+  updateCountComment();
 };
 
 function openUserModal(evt) {
   userModalElement.classList.remove('hidden');
-  socialCommentCount.classList.add('hidden');
-  commentsLoader.classList.add('hidden');
   document.body.classList.add('modal-open');
 
   for (let i = 0; i < pictureArray.length; i++) {
     if (evt.target === pictureArray[i]) {
-      userModalElement.querySelector('.big-picture__img').children[0].src =
-        similarPictures[i].url;
-      userModalElement.querySelector('.likes-count').textContent =
-        similarPictures[i].likes;
-      userModalElement.querySelector('.comments-count').textContent =
-        similarPictures[i].comments.length;
-      userModalElement.querySelector('.social__caption').textContent =
-        similarPictures[i].description;
-
-      similarPictures[i].comments.forEach((comment) => {
-        socialComments.appendChild(renderingComments(comment));
-      });
+      renderingFullSizePicture(similarPictures[i]);
+      renderingComments(similarPictures[i].comments);
     }
   }
 
@@ -70,4 +109,8 @@ userModalOpenElement.addEventListener('click', (evt) => {
 
 userModalCloseElement.addEventListener('click', () => {
   closeUserModal();
+});
+
+socialCommentsLoader.addEventListener('click', () => {
+  loadMoreComments();
 });
