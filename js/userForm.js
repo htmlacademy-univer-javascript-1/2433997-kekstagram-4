@@ -95,3 +95,5 @@ formImageUpload.addEventListener('submit', (evt) => {
     evt.preventDefault();
   }
 });
+
+export { formImageUpload };
