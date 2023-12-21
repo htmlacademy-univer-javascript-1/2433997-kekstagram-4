@@ -1,4 +1,3 @@
-import { similarPictures } from './thumbnails.js';
 import { isEscapeKey } from './util.js';
 
 const userModalElement = document.querySelector('.big-picture');
@@ -14,7 +13,6 @@ const socialCommentCount = userModalElement.querySelector(
 const socialCommentsLoader = userModalElement.querySelector(
   '.social__comments-loader'
 );
-const pictureArray = document.querySelectorAll('.picture__img');
 
 const onDocumentKeydown = (evt) => {
   if (isEscapeKey(evt)) {
@@ -80,9 +78,10 @@ const loadMoreComments = () => {
   updateCountComment();
 };
 
-function openUserModal(evt) {
+function openUserModal(evt, similarPictures) {
   userModalElement.classList.remove('hidden');
   document.body.classList.add('modal-open');
+  const pictureArray = document.querySelectorAll('.picture__img');
 
   for (let i = 0; i < pictureArray.length; i++) {
     if (evt.target === pictureArray[i]) {
@@ -101,16 +100,20 @@ function closeUserModal() {
   document.removeEventListener('keydown', onDocumentKeydown);
 }
 
-userModalOpenElement.addEventListener('click', (evt) => {
-  if (evt.target.closest('.picture')) {
-    openUserModal(evt);
-  }
-});
+function createFullSizeThumbnails(similarPictures) {
+  userModalOpenElement.addEventListener('click', (evt) => {
+    if (evt.target.closest('.picture')) {
+      openUserModal(evt, similarPictures);
+    }
+  });
 
-userModalCloseElement.addEventListener('click', () => {
-  closeUserModal();
-});
+  userModalCloseElement.addEventListener('click', () => {
+    closeUserModal();
+  });
 
-socialCommentsLoader.addEventListener('click', () => {
-  loadMoreComments();
-});
+  socialCommentsLoader.addEventListener('click', () => {
+    loadMoreComments();
+  });
+}
+
+export { createFullSizeThumbnails };
