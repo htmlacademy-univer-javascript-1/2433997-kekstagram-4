@@ -55,7 +55,7 @@ function createSlider() {
 
 function changeImage() {
   const currentValue = parseInt(scaleControl.value, 10) / 100;
-  imgPreview.style.transform = `scale(${currentValue})`;
+  imgPreview.children[0].style.transform = `scale(${currentValue})`;
 }
 
 function makeScaleBig() {
@@ -87,9 +87,9 @@ function onUserFormEffects() {
   sliderElement.noUiSlider.on('update', () => {
     valueElement.value = sliderElement.noUiSlider.get();
     if (chosenEffect === DEFAULT_EFFECT) {
-      imgPreview.style.filter = DEFAULT_EFFECT.style;
+      imgPreview.children[0].style.filter = DEFAULT_EFFECT.style;
     } else {
-      imgPreview.style.filter = `${chosenEffect.style}(${valueElement.value}${chosenEffect.unit})`;
+      imgPreview.children[0].style.filter = `${chosenEffect.style}(${valueElement.value}${chosenEffect.unit})`;
     }
   });
 

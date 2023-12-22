@@ -8,6 +8,7 @@ import {
   setRandomFilter,
   setDiscussedFilter,
 } from './filter.js';
+import './avatar.js';
 
 const succesMessageTemplate = document.querySelector('#success').content;
 const succesMessage = succesMessageTemplate.querySelector('.success');
